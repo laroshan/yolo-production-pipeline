@@ -1,5 +1,4 @@
 from functools import lru_cache
-from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,7 +23,7 @@ class Settings(BaseSettings):
     WORKERS_COUNT: int = 1
 
     # Security & CORS
-    ALLOWED_ORIGINS: List[str] = ["*"]
+    ALLOWED_ORIGINS: list[str] = ["*"]
     API_KEY_HEADER: str = "X-API-Key"
     API_KEY: str = "dev-secret-key-change-in-prod"
 
@@ -50,7 +49,7 @@ class Settings(BaseSettings):
     ENABLE_PROMETHEUS: bool = True
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     """Cached settings singleton."""
     return Settings()

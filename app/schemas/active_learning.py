@@ -1,7 +1,8 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
-from pydantic import BaseModel, Field
+
+from pydantic import BaseModel
+
 from app.schemas.inference import BoundingBoxCoordinates
 
 
@@ -21,9 +22,9 @@ class ActiveLearningFeedbackRequest(BaseModel):
     """Payload received directly from React frontend 'Violation ML Solution Page'."""
     image_id: str
     reviewer_id: str
-    claim_reference_id: Optional[str] = None
-    corrected_boxes: List[CorrectedBox]
-    review_notes: Optional[str] = None
+    claim_reference_id: str | None = None
+    corrected_boxes: list[CorrectedBox]
+    review_notes: str | None = None
 
 
 class ActiveLearningQueueItem(BaseModel):
@@ -34,10 +35,10 @@ class ActiveLearningQueueItem(BaseModel):
     detected_class: str
     status: ReviewStatus
     created_at: datetime
-    reviewed_by: Optional[str] = None
-    reviewed_at: Optional[datetime] = None
+    reviewed_by: str | None = None
+    reviewed_at: datetime | None = None
 
 
 class ActiveLearningQueueResponse(BaseModel):
     total_pending: int
-    items: List[ActiveLearningQueueItem]
+    items: list[ActiveLearningQueueItem]

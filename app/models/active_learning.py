@@ -1,7 +1,9 @@
 import json
-from datetime import datetime
 import uuid
-from sqlalchemy import Column, DateTime, Float, Integer, String, Text
+from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Float, String, Text
+
 from app.db.session import Base
 
 
@@ -14,16 +16,16 @@ class ActiveLearningRecord(Base):
     detected_class = Column(String(64), nullable=False)
     confidence = Column(Float, nullable=False)
     status = Column(String(32), default="PENDING_REVIEW", index=True)
-    
+
     # Raw prediction serialized bounding boxes
     raw_prediction_json = Column(Text, nullable=True)
-    
+
     # Human reviewer feedback
     reviewer_id = Column(String(64), nullable=True, index=True)
     claim_reference_id = Column(String(64), nullable=True)
     corrected_boxes_json = Column(Text, nullable=True)
     review_notes = Column(Text, nullable=True)
-    
+
     # Audit timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     reviewed_at = Column(DateTime, nullable=True)

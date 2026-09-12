@@ -1,14 +1,15 @@
-from typing import Generic, Optional, TypeVar
-from pydantic import BaseModel, Field
+from typing import Generic, TypeVar
+
+from pydantic import BaseModel
 
 T = TypeVar("T")
 
 
 class APIResponse(BaseModel, Generic[T]):
     success: bool = True
-    message: Optional[str] = None
-    data: Optional[T] = None
-    error: Optional[str] = None
+    message: str | None = None
+    data: T | None = None
+    error: str | None = None
 
 
 class HealthStatus(BaseModel):

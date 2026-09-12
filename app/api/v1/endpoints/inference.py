@@ -1,8 +1,9 @@
 import io
 import uuid
+
+import structlog
 from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, UploadFile, status
 from PIL import Image
-import structlog
 
 from app.api.deps import get_active_learning_service, get_model_engine
 from app.schemas.inference import InferenceResponse
@@ -58,7 +59,7 @@ async def predict_image(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to decode image payload.",
-        )
+        ) from e
 
     image_id = f"img_{uuid.uuid4().hex[:12]}"
     filename = file.filename or f"{image_id}.jpg"

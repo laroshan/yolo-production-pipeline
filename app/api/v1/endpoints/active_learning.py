@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, Query, status
 from app.api.deps import get_active_learning_service
 from app.schemas.active_learning import (
     ActiveLearningFeedbackRequest,
-    ActiveLearningQueueItem,
     ActiveLearningQueueResponse,
 )
 from app.schemas.common import APIResponse

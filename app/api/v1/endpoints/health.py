@@ -31,9 +31,9 @@ async def readiness(
     """Kubernetes readiness probe verifying DB connectivity and Model readiness."""
     # Verify DB connectivity
     await db.execute(text("SELECT 1"))
-    
+
     # Verify Model is ready
     if not engine.is_ready:
         return {"ready": False, "reason": "model_not_initialized"}
-        
+
     return {"ready": True, "device": engine.device}
