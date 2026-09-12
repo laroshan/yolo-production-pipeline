@@ -1,4 +1,3 @@
-from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -36,7 +35,7 @@ class InferenceResponse(BaseModel):
     image_width: int
     image_height: int
     total_detections: int
-    detections: List[DetectionItem]
+    detections: list[DetectionItem]
     requires_human_triage: bool
     inference_time_ms: float
     model_version: str

@@ -1,4 +1,3 @@
-from typing import AsyncGenerator
 from fastapi import Depends, HTTPException, Security, status
 from fastapi.security.api_key import APIKeyHeader
 from sqlalchemy.ext.asyncio import AsyncSession

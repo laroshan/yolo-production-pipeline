@@ -1,10 +1,10 @@
 import asyncio
 import time
-from typing import List, Tuple
+
 import numpy as np
-from PIL import Image
 import structlog
 import torch
+from PIL import Image
 from ultralytics import YOLO
 
 from app.core.config import Settings
@@ -78,7 +78,7 @@ class ModelEngine:
         except Exception as e:
             logger.warning("model_warmup_failed_non_fatal", error=str(e))
 
-    def _sync_predict(self, image: Image.Image) -> Tuple[List[DetectionItem], int, int]:
+    def _sync_predict(self, image: Image.Image) -> tuple[list[DetectionItem], int, int]:
         """Synchronous CPU/GPU bound inference step."""
         width, height = image.size
 
@@ -90,7 +90,7 @@ class ModelEngine:
             verbose=False,
         )
 
-        detections: List[DetectionItem] = []
+        detections: list[DetectionItem] = []
         res = results[0]
 
         if res.boxes is not None and len(res.boxes) > 0:
@@ -140,10 +140,10 @@ class ModelEngine:
             raise RuntimeError("Model engine is not initialized.")
 
         start_time = time.perf_counter()
-        
+
         # Non-blocking async execution
         detections, width, height = await asyncio.to_thread(self._sync_predict, image)
-        
+
         inference_time_ms = round((time.perf_counter() - start_time) * 1000, 2)
         requires_triage = any(d.is_uncertain for d in detections)
 

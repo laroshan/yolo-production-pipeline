@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -27,18 +28,18 @@ async def lifespan(app: FastAPI):
     3. Handles graceful cleanup on shutdown
     """
     logger.info("service_starting", project=settings.PROJECT_NAME, version=settings.VERSION)
-    
+
     # 1. Initialize SQLite / Database
     await init_db()
-    
+
     # 2. Initialize Model Engine
     engine = ModelEngine(settings)
     engine.initialize()
     set_model_engine(engine)
-    
+
     logger.info("service_ready_to_accept_traffic")
     yield
-    
+
     # 3. Teardown
     logger.info("service_shutting_down")
 

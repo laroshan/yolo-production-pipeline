@@ -1,8 +1,8 @@
 from datetime import datetime
-from typing import List
+
+import structlog
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-import structlog
 
 from app.models.active_learning import ActiveLearningRecord
 from app.schemas.active_learning import (
@@ -47,7 +47,7 @@ class ActiveLearningService:
             count=len(uncertain_detections),
         )
 
-    async def get_pending_queue(self, limit: int = 50) -> List[ActiveLearningQueueItem]:
+    async def get_pending_queue(self, limit: int = 50) -> list[ActiveLearningQueueItem]:
         """Fetches pending items for the React frontend 'Violation ML Solution Page'."""
         query = (
             select(ActiveLearningRecord)
