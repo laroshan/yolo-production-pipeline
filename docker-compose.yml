@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  claimsight-vision:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: claimsight-vision-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - claimsight-data:/app/data
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - TORCH_THREADS=4
+      - UNCERTAINTY_MIN_CONF=0.30
+      - UNCERTAINTY_MAX_CONF=0.70
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # Production Observability (Metrics Scraper)
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: claimsight-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    depends_on:
+      - claimsight-vision
+    restart: unless-stopped
+
+volumes:
+  claimsight-data:
