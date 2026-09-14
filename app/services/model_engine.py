@@ -1,4 +1,5 @@
 import asyncio
+import threading
 import time
 
 import numpy as np
@@ -33,6 +34,7 @@ class ModelEngine:
         self.model: YOLO | None = None
         self.device: str = "cpu"
         self._is_ready: bool = False
+        self._inference_lock = threading.Lock()  # Serialize concurrent model.predict() calls
 
     def initialize(self) -> None:
         """Loads model into memory and determines optimal compute backend."""
@@ -82,13 +84,16 @@ class ModelEngine:
         """Synchronous CPU/GPU bound inference step."""
         width, height = image.size
 
-        results = self.model.predict(
-            source=image,
-            conf=self.settings.CONFIDENCE_THRESHOLD,
-            iou=self.settings.IOU_THRESHOLD,
-            device=self.device,
-            verbose=False,
-        )
+        # Thread-safe inference: YOLO model is not inherently thread-safe.
+        # Lock serializes concurrent forward passes to prevent CUDA context corruption.
+        with self._inference_lock:
+            results = self.model.predict(
+                source=image,
+                conf=self.settings.CONFIDENCE_THRESHOLD,
+                iou=self.settings.IOU_THRESHOLD,
+                device=self.device,
+                verbose=False,
+            )
 
         detections: list[DetectionItem] = []
         res = results[0]

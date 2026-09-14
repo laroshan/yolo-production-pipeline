@@ -28,7 +28,7 @@ flowchart TD
     end
 
     subgraph VisionService ["ClaimSight AI Microservice (FastAPI)"]
-        API["FastAPI Gateway\n(Correlation ID, Auth, Rate Limiting)"]
+        API["FastAPI Gateway\n(Correlation ID, Auth, Payload Validation)"]
         Engine["ModelEngine\n(asyncio.to_thread, YOLOv8)"]
         ALQueue["Active Learning Service\n(Uncertainty Sampling, SQLite/PostgreSQL)"]
         Metrics["Prometheus Exporter\n(/metrics)"]

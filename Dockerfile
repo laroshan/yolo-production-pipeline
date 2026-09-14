@@ -34,9 +34,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN groupadd -g 10001 appgroup && \
     useradd -u 10001 -g appgroup -s /bin/bash -m appuser
 
-# Copy Python packages from builder
-COPY --from=builder /root/.local /home/appuser/.local
-COPY --from=builder /build/yolov8n.pt /app/yolov8n.pt
+# Copy Python packages from builder (must be owned by appuser)
+COPY --from=builder --chown=appuser:appgroup /root/.local /home/appuser/.local
+COPY --from=builder --chown=appuser:appgroup /build/yolov8n.pt /app/yolov8n.pt
 
 ENV PATH=/home/appuser/.local/bin:$PATH \
     PYTHONUNBUFFERED=1 \
