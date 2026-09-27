@@ -27,6 +27,9 @@ AsyncSessionLocal = async_sessionmaker(
 class Base(DeclarativeBase):
     pass
 
+# Import models so they are registered with Base.metadata before create_all is called
+import app.models  # noqa
+
 
 async def init_db() -> None:
     """Creates database tables on startup."""

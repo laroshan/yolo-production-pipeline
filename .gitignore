@@ -22,3 +22,13 @@ venv.bak/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Testing and coverage
+coverage.xml
+.coverage
+htmlcov/
+.pytest_cache/
+
+# IDEs
+.idea/
+
