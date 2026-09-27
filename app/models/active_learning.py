@@ -23,6 +23,7 @@ class ActiveLearningRecord(Base):
     # Human reviewer feedback
     reviewer_id = Column(String(64), nullable=True, index=True)
     claim_reference_id = Column(String(64), nullable=True)
+
     corrected_boxes_json = Column(Text, nullable=True)
     review_notes = Column(Text, nullable=True)
 

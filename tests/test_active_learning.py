@@ -1,7 +1,6 @@
 import pytest
 from httpx import AsyncClient
 
-from app.api.deps import get_active_learning_service
 from app.db.session import get_db
 from app.services.active_learning_service import ActiveLearningService
 
